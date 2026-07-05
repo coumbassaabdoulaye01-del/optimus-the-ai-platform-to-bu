@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Github, Menu, X } from "lucide-react";
 
 const navLinks = [
   { name: "Features", href: "#features" },
@@ -64,16 +64,21 @@ export function Navigation() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <a href="#" className={`text-foreground/70 hover:text-foreground transition-all duration-500 ${isScrolled ? "text-xs" : "text-sm"}`}>
-              Sign in
-            </a>
-            <Button
-              size="sm"
-              className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 ${isScrolled ? "px-4 h-8 text-xs" : "px-6"}`}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="/api/auth/google"
+              className={`inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-background/60 text-foreground/70 hover:text-foreground transition-all duration-500 ${isScrolled ? "h-8 px-3 text-xs" : "h-9 px-4 text-sm"}`}
             >
-              Start creating
-            </Button>
+              <span className="font-semibold">G</span>
+              Google
+            </a>
+            <a
+              href="/api/auth/github"
+              className={`inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all duration-500 ${isScrolled ? "h-8 px-3 text-xs" : "h-9 px-5 text-sm"}`}
+            >
+              <Github className="h-4 w-4" />
+              GitHub
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -132,15 +137,15 @@ export function Navigation() {
             <Button 
               variant="outline" 
               className="flex-1 rounded-full h-14 text-base"
-              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
             >
-              Sign in
+              <a href="/api/auth/google" onClick={() => setIsMobileMenuOpen(false)}>Google</a>
             </Button>
             <Button 
               className="flex-1 bg-foreground text-background rounded-full h-14 text-base"
-              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
             >
-              Start creating
+              <a href="/api/auth/github" onClick={() => setIsMobileMenuOpen(false)}>GitHub</a>
             </Button>
           </div>
         </div>

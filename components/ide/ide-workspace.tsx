@@ -8,6 +8,8 @@ import { FileExplorer } from "./file-explorer"
 import { CodeEditor } from "./code-editor"
 import { Terminal } from "./terminal"
 import { LoginGate } from "./login-gate"
+import { CoderPanel, CoderShell } from "@/components/coder/coder-shell"
+import { CoderTopbar } from "@/components/coder/coder-topbar"
 import { PrDialog } from "./pr-dialog"
 import {
   buildTreeFromPaths,
@@ -21,6 +23,8 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 type MeResponse = {
   authenticated: boolean
+  provider?: "github" | "google"
+  canUseRepository?: boolean
   user?: { login: string; name: string | null; avatarUrl: string; htmlUrl: string }
   repo?: string | null
 }
@@ -47,7 +51,47 @@ export function IdeWorkspace({ authError }: { authError?: string | null }) {
     return <LoginGate error={authError} />
   }
 
+  if (me.provider === "google" && !me.canUseRepository) {
+    return <GoogleConnectedGate me={me} />
+  }
+
   return <AuthedWorkspace me={me} />
+}
+
+function GoogleConnectedGate({ me }: { me: MeResponse }) {
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" })
+    window.location.reload()
+  }
+
+  return (
+    <CoderShell>
+      <CoderTopbar />
+      <main className="grid min-h-[calc(100vh-3.5rem)] place-items-center px-6 py-12">
+        <CoderPanel className="w-full max-w-lg p-8 text-center">
+          {me.user?.avatarUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={me.user.avatarUrl} alt={me.user.login} className="mx-auto h-16 w-16 rounded-full" />
+          )}
+          <p className="mt-6 font-mono text-xs uppercase tracking-[0.2em] text-white/35">SSO Google</p>
+          <h1 className="mt-2 text-3xl font-semibold">Connexion Google active</h1>
+          <p className="mt-3 text-sm leading-6 text-white/60">
+            Bienvenue {me.user?.name ?? me.user?.login}. L’accès général est prêt. Pour utiliser
+            l’éditeur Git, les commits et les pull requests sur {me.repo ?? "le dépôt central"},
+            connecte aussi ton compte GitHub.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a href="/api/auth/github" className="flex-1 rounded-xl bg-white px-4 py-3 text-sm font-medium text-black">
+              Connecter GitHub
+            </a>
+            <button type="button" onClick={logout} className="flex-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-white/70">
+              Se déconnecter
+            </button>
+          </div>
+        </CoderPanel>
+      </main>
+    </CoderShell>
+  )
 }
 
 function AuthedWorkspace({ me }: { me: MeResponse }) {

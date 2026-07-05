@@ -6,7 +6,10 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start",
+    "sync:coder": "node scripts/sync-coder-components.mjs",
+    "install:coder": "bash scripts/install-coder.sh",
+    "start:coder": "coder server --http-address 127.0.0.1:3001"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
