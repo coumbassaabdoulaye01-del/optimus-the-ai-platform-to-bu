@@ -21,6 +21,8 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 type MeResponse = {
   authenticated: boolean
+  provider?: "github" | "google"
+  canUseRepository?: boolean
   user?: { login: string; name: string | null; avatarUrl: string; htmlUrl: string }
   repo?: string | null
 }
@@ -47,7 +49,43 @@ export function IdeWorkspace({ authError }: { authError?: string | null }) {
     return <LoginGate error={authError} />
   }
 
+  if (me.provider === "google" && !me.canUseRepository) {
+    return <GoogleConnectedGate me={me} />
+  }
+
   return <AuthedWorkspace me={me} />
+}
+
+function GoogleConnectedGate({ me }: { me: MeResponse }) {
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" })
+    window.location.reload()
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#08090c] px-6 text-white">
+      <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-white/[.04] p-8 text-center shadow-2xl shadow-black/40">
+        {me.user?.avatarUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={me.user.avatarUrl} alt={me.user.login} className="mx-auto h-16 w-16 rounded-full" />
+        )}
+        <h1 className="mt-6 text-3xl font-semibold">Connexion Google active</h1>
+        <p className="mt-3 text-sm leading-6 text-white/60">
+          Bienvenue {me.user?.name ?? me.user?.login}. L’accès général est prêt. Pour utiliser
+          l’éditeur Git, les commits et les pull requests sur {me.repo ?? "le dépôt central"},
+          connecte aussi ton compte GitHub.
+        </p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href="/api/auth/github" className="flex-1 rounded-xl bg-white px-4 py-3 text-sm font-medium text-black">
+            Connecter GitHub
+          </a>
+          <button type="button" onClick={logout} className="flex-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-white/70">
+            Se déconnecter
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function AuthedWorkspace({ me }: { me: MeResponse }) {
