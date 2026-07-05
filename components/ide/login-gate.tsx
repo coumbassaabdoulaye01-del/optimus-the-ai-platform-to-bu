@@ -1,6 +1,7 @@
 "use client"
 
 import { CoderAuthCard } from "@/components/coder/coder-auth-card"
+import { CoderComponentGallery } from "@/components/coder/coder-component-gallery"
 import { CoderDashboardPreview } from "@/components/coder/coder-dashboard-preview"
 import { CoderShell } from "@/components/coder/coder-shell"
 import { CoderSidebar } from "@/components/coder/coder-sidebar"
@@ -30,6 +31,9 @@ export function LoginGate({ error }: { error?: string | null }) {
               <CoderAuthCard error={error} />
             </div>
             <CoderDashboardPreview />
+            <div className="mt-4">
+              <CoderComponentGallery />
+            </div>
           </div>
         </main>
       </div>
