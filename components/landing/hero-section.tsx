@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Github } from "lucide-react";
 import { AnimatedSphere } from "./animated-sphere";
 
 const words = ["create", "build", "scale", "ship"];
@@ -121,16 +121,24 @@ export function HeroSection() {
             <Button 
               size="lg" 
               className="bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group"
+              asChild
             >
-              Start free trial
-              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              <a href="/api/auth/github">
+                <Github className="w-4 h-4 mr-2" />
+                Continue with GitHub
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+              </a>
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="h-14 px-8 text-base rounded-full border-foreground/20 hover:bg-foreground/5"
+              asChild
             >
-              Watch demo
+              <a href="/api/auth/google">
+                <span className="mr-2 font-semibold">G</span>
+                Continue with Google
+              </a>
             </Button>
           </div>
         </div>
