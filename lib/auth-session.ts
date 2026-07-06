@@ -34,7 +34,9 @@ export async function getProviderSessionToken(provider: AuthProvider): Promise<s
 }
 
 export async function getSessionToken(): Promise<string | null> {
-  return getProviderSessionToken("github")
+  const provider = await getCurrentAuthProvider()
+  if (!provider) return null
+  return getProviderSessionToken(provider)
 }
 
 export async function getCurrentAuthProvider(): Promise<AuthProvider | null> {
