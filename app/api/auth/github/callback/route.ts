@@ -21,11 +21,13 @@ export async function GET(request: NextRequest) {
   const clientId = process.env.GITHUB_CLIENT_ID
   const clientSecret = process.env.GITHUB_CLIENT_SECRET
   if (!clientId || !clientSecret) {
+    console.error("Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET")
     ideUrl.searchParams.set("auth_error", "server_config")
     return NextResponse.redirect(ideUrl)
   }
 
   // Exchange the code for an access token.
+  console.log("Exchanging GitHub code for token...")
   const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -40,9 +42,11 @@ export async function GET(request: NextRequest) {
   const tokenData = (await tokenRes.json()) as {
     access_token?: string
     error?: string
+    error_description?: string
   }
 
   if (!tokenData.access_token) {
+    console.error("GitHub token exchange failed:", tokenData.error, tokenData.error_description)
     ideUrl.searchParams.set("auth_error", tokenData.error ?? "token_exchange_failed")
     return NextResponse.redirect(ideUrl)
   }

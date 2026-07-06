@@ -4,6 +4,23 @@ import Link from "next/link"
 import { ArrowLeft, Github, GitBranch, LockKeyhole, TerminalSquare, Users } from "lucide-react"
 
 export function LoginGate({ error }: { error?: string | null }) {
+  const getErrorMessage = (err: string) => {
+    switch (err) {
+      case "server_config":
+        return "Erreur de configuration du serveur (variables d'environnement manquantes)."
+      case "state_mismatch":
+        return "Échec de la validation de sécurité (state mismatch). Veuillez réessayer."
+      case "missing_code":
+        return "Code d'autorisation manquant de la part du fournisseur."
+      case "token_exchange_failed":
+        return "Échec de l'échange du jeton d'accès."
+      case "access_denied":
+        return "Accès refusé par l'utilisateur ou le fournisseur."
+      default:
+        return err
+    }
+  }
+
   return (
     <div className="min-h-screen overflow-hidden bg-[#08090c] text-white">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.055)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(circle_at_50%_20%,black,transparent_72%)]" />
@@ -64,7 +81,7 @@ export function LoginGate({ error }: { error?: string | null }) {
 
             {error && (
               <p className="mb-4 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 font-mono text-xs text-red-200">
-                Échec de connexion : {error}
+                Échec de connexion : {getErrorMessage(error)}
               </p>
             )}
 
