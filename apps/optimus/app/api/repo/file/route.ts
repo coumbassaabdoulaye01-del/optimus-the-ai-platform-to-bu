@@ -9,12 +9,12 @@ export async function GET(request: Request) {
   const path = searchParams.get("path");
   const workspaceId = searchParams.get("workspaceId");
 
-  // Enforce isolation
+  // Isolation check
   const isOwner = true;
   if (!isOwner) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   return NextResponse.json({
-    content: `// Source code from ${workspaceId}\n// Securely served for ${session.user.name}`,
+    content: "// Secure file content from isolated workspace",
     path
   });
 }
@@ -23,24 +23,16 @@ export async function POST(request: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  // 3. AI Safety Rule: Read-Only by default for Agents
-  const agentId = request.headers.get("X-Optimus-Agent-ID");
-  const isAI = agentId !== null;
-
+  // 3. AI Safety Check: Read-Only for Agents
+  const isAI = request.headers.get("X-Optimus-Agent-ID") !== null;
   if (isAI) {
-    // Prevent direct push from AI to protect customer code
     return NextResponse.json({
-      error: "Read-Only Access: AI Agents are not allowed to push directly to main branch.",
-      requiredAction: "SUBMIT_PULL_REQUEST",
-      message: "Please use the /api/repo/pr route to submit your changes for human validation."
+      error: "Read-Only: AI Agents must submit a Pull Request to modify code.",
+      action: "SUBMIT_PR"
     }, { status: 403 });
   }
 
   const body = await request.json();
-  // Direct save for Humans allowed (Visual validation on screen)
-  return NextResponse.json({
-    success: true,
-    path: body.path,
-    message: "File saved successfully in your isolated workspace."
-  });
+  // Human user can save directly
+  return NextResponse.json({ success: true, path: body.path });
 }

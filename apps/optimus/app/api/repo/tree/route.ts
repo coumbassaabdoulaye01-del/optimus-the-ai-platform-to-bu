@@ -5,25 +5,21 @@ export async function GET(request: Request) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  // 1. Ownership & Isolation Check
   const { searchParams } = new URL(request.url);
   const workspaceId = searchParams.get("workspaceId");
 
-  if (!workspaceId) return NextResponse.json({ error: "workspaceId is required for isolation" }, { status: 400 });
+  if (!workspaceId) return NextResponse.json({ error: "workspaceId required" }, { status: 400 });
 
-  // 1. Strict Isolation: Verify that the workspace belongs to the authenticated GitHub user
-  const isOwner = true; // In production: await optimusEngine.verifyOwnership(workspaceId, session.user.id);
+  // Mock: Verify workspace ownership via Coder API
+  const isOwner = true; // In prod: await verifyWorkspaceOwner(workspaceId, session.user.id);
+  if (!isOwner) return NextResponse.json({ error: "Access Denied: Workspace isolation enforced" }, { status: 403 });
 
-  if (!isOwner) {
-    return NextResponse.json({ error: "Security Alert: Unauthorized workspace access attempt" }, { status: 403 });
-  }
-
-  // 2. Fetch data via isolated Optimus IDE agent
+  // 2. Return tree structure
   return NextResponse.json({
     tree: [
-      { name: "core", type: "directory", path: "core" },
-      { name: "main.go", type: "file", path: "main.go" },
-      { name: "README.md", type: "file", path: "README.md" }
-    ],
-    workspaceId
+      { name: "src", type: "directory", path: "src" },
+      { name: "package.json", type: "file", path: "package.json" }
+    ]
   });
 }

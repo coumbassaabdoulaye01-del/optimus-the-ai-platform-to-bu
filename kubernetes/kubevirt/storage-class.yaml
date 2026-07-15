@@ -1,0 +1,8 @@
+# High-performance StorageClass for VM Disks
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: optimus-vm-storage
+provisioner: kubernetes.io/no-provisioner # Using LocalPath CSI or similar for K3s performance
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer

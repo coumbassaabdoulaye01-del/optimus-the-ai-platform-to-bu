@@ -1,0 +1,37 @@
+# Optimus Zero-Trust Network Policies
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-agent-workspaces
+spec:
+  podSelector:
+    matchLabels:
+      type: agent-ia
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: optimus-platform # Allow traffic only from the platform
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8 # Block internal cluster traffic
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: isolate-vm-traffic
+spec:
+  podSelector:
+    matchLabels:
+      kubevirt.io/domain: optimus-base-ubuntu
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: optimus-platform

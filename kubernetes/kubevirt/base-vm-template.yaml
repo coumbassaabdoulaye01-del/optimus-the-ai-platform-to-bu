@@ -1,0 +1,42 @@
+# Optimus Base VM Template with pre-configured SSH
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: optimus-base-ubuntu
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: optimus-base-ubuntu
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          interfaces:
+          - masquerade: {}
+            name: default
+        resources:
+          requests:
+            memory: 2Gi
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - containerDisk:
+          image: quay.io/containerdisks/ubuntu:24.04
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |
+            #cloud-config
+            ssh_authorized_keys:
+              - ssh-rsa AAAAB3N... # Optimus Portal Key
+            password: "optimus-secure"
+            chpasswd: { expire: False }
+        name: cloudinitdisk

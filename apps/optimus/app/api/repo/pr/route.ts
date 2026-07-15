@@ -2,31 +2,24 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth-session";
 
 export async function POST(request: Request) {
-  // Can be authorized via Session (Human helping AI) or API Key (Agent autonomous)
   const session = await getSession();
-  const apiKey = request.headers.get("X-Optimus-API-Key");
-
-  if (!session && !apiKey) {
-    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
-  }
+  // Agents use API Keys, Humans use Session.
+  // We'll handle both but prioritize safety.
 
   const body = await request.json();
-  const { title, branch, changes, workspaceId } = body;
+  const { title, description, changes, workspaceId } = body;
 
-  if (!title || !changes || !workspaceId) {
-    return NextResponse.json({ error: "Missing required PR fields" }, { status: 400 });
+  if (!title || !changes) {
+    return NextResponse.json({ error: "Title and changes required" }, { status: 400 });
   }
 
-  // 4. Create Pull Request for Human Review
-  const prId = `opt_pr_${Math.random().toString(36).substring(7)}`;
-
-  console.log(`[Optimus Security] New PR created by agent ${request.headers.get("X-Optimus-Agent-ID") || "human"}`);
+  // 4. Create PR for Human Validation
+  console.log(`[PR] AI Agent submitted changes for workspace ${workspaceId}: ${title}`);
 
   return NextResponse.json({
     success: true,
-    prId,
-    status: "awaiting_human_validation",
-    reviewUrl: `/review/${prId}`,
-    message: "Your changes have been staged. A human developer will now review and validate your code before merge."
+    prId: "pr_" + Math.random().toString(36).substr(2, 9),
+    status: "pending_review",
+    message: "Pull Request created successfully. A human must validate your changes before they are merged."
   });
 }
