@@ -19,8 +19,7 @@ jobs:
 
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: 10
+      # Removed the 'version' key to allow pnpm/action-setup to read from package.json
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4

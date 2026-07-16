@@ -1,3 +1,4 @@
+# KubeVirt Operator Deployment (Simplified for infra-as-code reference)
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -12,4 +13,4 @@ spec:
   certificateRotateStrategy: {}
   configuration:
     developerConfiguration:
-      useEmulation: true
+      useEmulation: true # Useful for development environments without nested virtualization
