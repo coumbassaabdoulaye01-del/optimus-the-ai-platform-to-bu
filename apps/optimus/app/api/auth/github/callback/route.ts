@@ -34,25 +34,23 @@ export async function GET(request: Request) {
     const ghUser = await userResponse.json();
 
     // 3. Keycloak Role Integration (Mock logic as requested)
-    // In a real system, we'd sync this with a Keycloak instance.
     const roles: UserRole[] = ["pc-dev-access"];
     if (ghUser.plan === "pro" || ghUser.followers > 100) {
       roles.push("premium-vm-ia");
     }
 
-    // 4. Secure Session Management (GitHub-Only, no passwords)
+    // 4. Secure Session Management
     await setSession({
       user: {
         id: ghUser.id.toString(),
         email: ghUser.email || `${ghUser.login}@github.optimus`,
         name: ghUser.name || ghUser.login,
         roles: roles,
-        githubToken: ghData.access_token, // Used for isolated repo cloning
+        githubToken: ghData.access_token,
       },
       accessToken: "opt_internal_" + Math.random().toString(36).substring(7),
     });
 
-    // Redirect to IDE dashboard
     return NextResponse.redirect(new URL("/ide", request.url));
   } catch (error) {
     console.error("Critical Auth Error:", error);

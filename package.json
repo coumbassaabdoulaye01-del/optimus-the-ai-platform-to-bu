@@ -8,7 +8,12 @@
     "test": "turbo test"
   },
   "devDependencies": {
-    "turbo": "^2.1.0"
+    "turbo": "^2.10.4"
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.30.3",
+  "pnpm": {
+    "overrides": {
+      "@types/d3-dispatch": "latest"
+    }
+  }
 }
