@@ -1,0 +1,20 @@
+# Kyverno policy to enforce Kata RuntimeClass for AI agents
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-kata-for-ai-agents
+spec:
+  rules:
+  - name: set-kata-runtime
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchLabels:
+              type: agent-ia
+    mutate:
+      patchStrategicMerge:
+        spec:
+          runtimeClassName: kata

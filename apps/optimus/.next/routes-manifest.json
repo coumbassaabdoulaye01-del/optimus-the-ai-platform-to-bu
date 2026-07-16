@@ -1,0 +1,122 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/auth/github",
+      "regex": "^/api/auth/github(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/github(?:/)?$"
+    },
+    {
+      "page": "/api/auth/github/callback",
+      "regex": "^/api/auth/github/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/github/callback(?:/)?$"
+    },
+    {
+      "page": "/api/auth/google",
+      "regex": "^/api/auth/google(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/google(?:/)?$"
+    },
+    {
+      "page": "/api/auth/google/callback",
+      "regex": "^/api/auth/google/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/google/callback(?:/)?$"
+    },
+    {
+      "page": "/api/auth/logout",
+      "regex": "^/api/auth/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/logout(?:/)?$"
+    },
+    {
+      "page": "/api/auth/me",
+      "regex": "^/api/auth/me(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/me(?:/)?$"
+    },
+    {
+      "page": "/api/repo/file",
+      "regex": "^/api/repo/file(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/repo/file(?:/)?$"
+    },
+    {
+      "page": "/api/repo/pr",
+      "regex": "^/api/repo/pr(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/repo/pr(?:/)?$"
+    },
+    {
+      "page": "/api/repo/tree",
+      "regex": "^/api/repo/tree(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/repo/tree(?:/)?$"
+    },
+    {
+      "page": "/ide",
+      "regex": "^/ide(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ide(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

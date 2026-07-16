@@ -1,0 +1,30 @@
+# Optimus AI Agent Pod under Kata Containers isolation
+apiVersion: v1
+kind: Pod
+metadata:
+  name: optimus-ai-agent
+  labels:
+    type: agent-ia
+spec:
+  runtimeClassName: kata # Hardware isolation
+  containers:
+  - name: goose-mcp
+    image: block/goose:latest # The Brain
+    env:
+    - name: OPTIMUS_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: agent-secrets
+          key: api-key
+    resources:
+      limits:
+        memory: "1Gi"
+        cpu: "1"
+  - name: openhands-executor
+    image: allhandsai/openhands:latest # The Executor
+    securityContext:
+      privileged: false # Keeping it safe inside Kata
+    resources:
+      limits:
+        memory: "2Gi"
+        cpu: "2"

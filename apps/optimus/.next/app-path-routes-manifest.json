@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/auth/github/callback/route": "/api/auth/github/callback",
+  "/api/auth/github/route": "/api/auth/github",
+  "/api/auth/google/callback/route": "/api/auth/google/callback",
+  "/api/auth/google/route": "/api/auth/google",
+  "/api/auth/logout/route": "/api/auth/logout",
+  "/api/auth/me/route": "/api/auth/me",
+  "/api/repo/file/route": "/api/repo/file",
+  "/api/repo/pr/route": "/api/repo/pr",
+  "/api/repo/tree/route": "/api/repo/tree",
+  "/ide/page": "/ide",
+  "/page": "/"
+}

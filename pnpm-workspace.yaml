@@ -1,0 +1,4 @@
+packages:
+  - 'apps/*'
+  - 'apps/optimus-ide/site'
+  - 'packages/*'

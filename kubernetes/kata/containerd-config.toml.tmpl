@@ -1,0 +1,6 @@
+# containerd configuration for K3s with Kata Containers support
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata]
+  runtime_type = "io.containerd.kata.v2"
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.kata.options]
+  ConfigPath = "/etc/kata-containers/configuration.toml"
